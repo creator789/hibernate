@@ -21,7 +21,7 @@ public class App {
         try(Session session = HibernateUtils.getSession()) {
             tx = session.beginTransaction();
             Employee employee = session.get(Employee.class, 1L);
-            session.merge(emp);
+            emp = (Employee) session.merge(emp);
             tx.commit();
         } catch (Exception e) {
             if(tx != null) tx.rollback();
