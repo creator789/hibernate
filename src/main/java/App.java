@@ -11,12 +11,20 @@ public class App {
             id = (Long) session.save(emp);
             tx.commit();
         } catch (Exception e) {
-            if(tx != null) {
-                tx.rollback();
-            }
+            if(tx != null) tx.rollback();
             e.printStackTrace();
         }
-        if(id != null)
-            System.out.println("Employee stored in database with id " + id);
+
+        // Changes made on detached object
+        emp.setFirstName("Johnson");
+
+        try(Session session = HibernateUtils.getSession()) {
+            tx = session.beginTransaction();
+            session.update(emp);
+            tx.commit();
+        } catch (Exception e) {
+            if(tx != null) tx.rollback();
+            e.printStackTrace();
+        }
     }
 }
